@@ -1,6 +1,38 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const loginUser = async () => {
+    const inputUsernameValue = document.querySelector("#login-username").value;
+    const inputPasswordValue = document.querySelector("#login-password").value;
+
+    const user = {
+      username: inputUsernameValue.trim(),
+      password: inputPasswordValue.trim(),
+    };
+
+    const apiHeaders = new Headers();
+    apiHeaders.append("Content-Type", "application/json");
+    const apiOptions = {
+      method: "POST",
+      headers: apiHeaders,
+      body: JSON.stringify(user)
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/login", apiOptions);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData[0].message || `Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      navigate("/dashboard");
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
   return (
     <>
       <main className="bg-[#263f68] min-h-dvh flex justify-center items-center font-roboto">
@@ -18,9 +50,10 @@ export const Login = () => {
               </div>
               <div className="w-full flex flex-col gap-2">
                 <label className="font-semibold text-xs text-gray-400">
-                  Username
+                  Nombre de usuario
                 </label>
                 <input
+                  id="login-username"
                   placeholder="Username"
                   className="border rounded-lg px-3 py-2 mb-5 text-gray-500 text-sm w-full outline-none dark:border-gray-500 dark:bg-gray-900"
                 />
@@ -28,22 +61,31 @@ export const Login = () => {
             </div>
             <div className="w-full flex flex-col gap-2">
               <label className="font-semibold text-xs text-gray-400">
-                Password
+                Contraseña
               </label>
               <input
-                placeholder="••••••••"
+                id="login-password"
                 className="border rounded-lg px-3 py-2 mb-5 text-gray-500 text-sm w-full outline-none dark:border-gray-500 dark:bg-gray-900"
                 type="password"
               />
             </div>
             <div>
-              <button className="py-1 px-8 bg-blue-500 hover:bg-blue-800 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg cursor-pointer select-none">
+              <button
+                className="py-1 px-8 bg-blue-500 hover:bg-blue-800 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg cursor-pointer select-none"
+                onClick={loginUser}
+              >
                 Ingresar
               </button>
             </div>
-            <hr className="my-5 bg-white"/>
+            <hr className="my-5 bg-white" />
             <div className="text-sm text-gray-500">
-              <Link className="text-blue-500" to="/register">Crear cuenta</Link> | <Link className="text-blue-500" to="/forgot-password">Olvide mi contraseña</Link>
+              <Link className="text-blue-500" to="/register">
+                Crear cuenta
+              </Link>{" "}
+              |{" "}
+              <Link className="text-blue-500" to="/forgot-password">
+                Olvide mi contraseña
+              </Link>
             </div>
           </div>
         </div>
