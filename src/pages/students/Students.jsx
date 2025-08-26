@@ -25,15 +25,15 @@ export const Students = ({ menuClosed, toggleMenu }) => {
             </div>
           </div>
         </section>
-        <Link to="/students/all" className="bg-blue-100 dark:bg-blue-900 border-l-4 border-green-500 dark:border-green-700 text-green-900 dark:text-green-100 p-2 rounded-lg flex flex-col justify-center items-center gap-3 transition duration-300 ease-in-out hover:bg-green-200 dark:hover:bg-green-800 transform hover:scale-105">
+        <Link to="/students/all" className="bg-blue-100 dark:bg-blue-900 border-l-4 border-blue-500 dark:border-blue-700 text-blue-900 dark:text-blue-100 p-2 rounded-lg flex flex-col justify-center items-center gap-3 transition duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-blue-800 transform hover:scale-105">
           <StudentListIcon className={"fill-white"} width={120} height={120}/>
           <h3 className="font-bold text-2xl">Estudiantes Inscritos</h3>
         </Link>
-        <Link to="/students/control" className="bg-green-100 dark:bg-green-900 border-l-4 border-green-500 dark:border-green-700 text-green-900 dark:text-green-100 p-2 rounded-lg flex flex-col justify-center items-center gap-3 transition duration-300 ease-in-out hover:bg-green-200 dark:hover:bg-green-800 transform hover:scale-105">
+        <Link to="/students/control" className="bg-blue-100 dark:bg-blue-900 border-l-4 border-blue-500 dark:border-blue-700 text-blue-900 dark:text-blue-100 p-2 rounded-lg flex flex-col justify-center items-center gap-3 transition duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-blue-800 transform hover:scale-105">
           <StudentControlIcon className={"fill-white"} width={120} height={120}/>
           <h3 className="font-bold text-2xl">Control de asistencias</h3>
         </Link>
-        <Link to="/students/payments" className="bg-green-100 dark:bg-green-900 border-l-4 border-green-500 dark:border-green-700 text-green-900 dark:text-green-100 p-2 rounded-lg flex flex-col justify-center items-center gap-3 transition duration-300 ease-in-out hover:bg-green-200 dark:hover:bg-green-800 transform hover:scale-105">
+        <Link to="/students/payments" className="bg-blue-100 dark:bg-blue-900 border-l-4 border-blue-500 dark:border-blue-700 text-blue-900 dark:text-blue-100 p-2 rounded-lg flex flex-col justify-center items-center gap-3 transition duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-blue-800 transform hover:scale-105">
           <StudentPaymentIcon className={"fill-white"} width={120} height={120}/>
           <h3 className="font-bold text-2xl">Control de pagos</h3>
         </Link>
