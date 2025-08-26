@@ -1,7 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useEnv } from "../../hooks/useEnv";
+import Cookies from "js-cookie";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { apiDomain } = useEnv();
   const loginUser = async () => {
     const inputUsernameValue = document.querySelector("#login-username").value;
     const inputPasswordValue = document.querySelector("#login-password").value;
@@ -16,18 +19,18 @@ export const Login = () => {
     const apiOptions = {
       method: "POST",
       headers: apiHeaders,
-      body: JSON.stringify(user)
+      body: JSON.stringify(user),
     };
 
     try {
-      const response = await fetch("http://localhost:3000/login", apiOptions);
+      const response = await fetch(`${apiDomain}/login`, apiOptions);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData[0].message || `Error: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log(data);
+      Cookies.set("account_login", data.token);
       navigate("/dashboard");
     } catch (error) {
       throw new Error(error.message);
