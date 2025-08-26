@@ -25,7 +25,7 @@ export const Students = ({ menuClosed, toggleMenu }) => {
             </div>
           </div>
         </section>
-        <Link to="/students/all" className="bg-green-100 dark:bg-green-900 border-l-4 border-green-500 dark:border-green-700 text-green-900 dark:text-green-100 p-2 rounded-lg flex flex-col justify-center items-center gap-3 transition duration-300 ease-in-out hover:bg-green-200 dark:hover:bg-green-800 transform hover:scale-105">
+        <Link to="/students/all" className="bg-blue-100 dark:bg-blue-900 border-l-4 border-green-500 dark:border-green-700 text-green-900 dark:text-green-100 p-2 rounded-lg flex flex-col justify-center items-center gap-3 transition duration-300 ease-in-out hover:bg-green-200 dark:hover:bg-green-800 transform hover:scale-105">
           <StudentListIcon className={"fill-white"} width={120} height={120}/>
           <h3 className="font-bold text-2xl">Estudiantes Inscritos</h3>
         </Link>
