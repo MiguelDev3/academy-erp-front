@@ -5,6 +5,7 @@ import { Register } from "./pages/register/Register";
 import { Dashboard } from "./pages/dashboard/Dashboard";
 import { Students } from "./pages/students/Students";
 import { useState } from "react";
+import { Plans } from "./pages/plans/Plans";
 
 function App() {
   const [menuClosed, setMenuClosed] = useState(true);
@@ -20,6 +21,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
         <Route path="/students" element={<Students menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
+        <Route path="/plans" element={<Plans menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -23,7 +23,7 @@ export const Login = () => {
     };
 
     try {
-      const response = await fetch(`${apiDomain}/login`, apiOptions);
+      const response = await fetch(`${apiDomain}/api/auth/login`, apiOptions);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData[0].message || `Error: ${response.status}`);
