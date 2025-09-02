@@ -6,6 +6,7 @@ import { Dashboard } from "./pages/dashboard/Dashboard";
 import { Students } from "./pages/students/Students";
 import { useState } from "react";
 import { Plans } from "./pages/plans/Plans";
+import { PlanForm } from "./pages/plans/PlanForm";
 
 function App() {
   const [menuClosed, setMenuClosed] = useState(true);
@@ -22,6 +23,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
         <Route path="/students" element={<Students menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
         <Route path="/plans" element={<Plans menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
+        <Route path="/plans/:action" element={<PlanForm menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
       </Routes>
     </BrowserRouter>
   );

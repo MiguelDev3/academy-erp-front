@@ -8,7 +8,7 @@ export const Sidebar = ({ menuClosed, toggleMenu }) => {
     <aside
       className={`fixed min-h-dvh min-w-70 bg-[#263f68] text-white transition-transform duration-400 ease-in-out ${
         menuClosed ? "-translate-x-full" : "translate-x-0"
-      }`}
+      } z-50`}
     >
       <h2 className="text-3xl font-bold">Menú</h2>
       <nav>

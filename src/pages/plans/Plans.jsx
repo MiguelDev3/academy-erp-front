@@ -1,12 +1,11 @@
-import {
-  useReactTable,
-  flexRender,
-  getCoreRowModel,
-  createColumnHelper,
-} from "@tanstack/react-table";
 import { HamburgerButton } from "../../components/ui/HamburgerButton";
 import { Sidebar } from "../../components/ui/sidebar";
 import { useState } from "react";
+import { PlanCard } from "./components/PlanCard";
+import { useEffect } from "react";
+import { PlusIcon } from "../../assets/icons/PlusIcon";
+import { useNavigate } from "react-router-dom";
+import { useEnv } from "../../hooks/useEnv";
 
 const defaultData = [
   {
@@ -17,100 +16,52 @@ const defaultData = [
   },
 ];
 
-const columnHelper = createColumnHelper();
-
-const columns = [
-  columnHelper.accessor("_id", {
-    header: (info) => "ID",
-    cell: (info) => info.getValue(),
-    footer: (info) => info.column.id,
-  }),
-  columnHelper.accessor("name", {
-    header: () => "Nombre",
-    cell: (info) => info.getValue(),
-    footer: (info) => info.column.id,
-  }),
-  columnHelper.accessor("hoursPerWeeK", {
-    header: () => "Horas/semana",
-    cell: (info) => info.getValue(),
-    footer: (info) => info.column.id
-  }),
-  columnHelper.accessor("cost", {
-    header: () => "Costo",
-    cell: (info) => `S/ ${info.getValue()}`,
-    footer: (info) => info.column.id
-  })
-];
 export const Plans = ({ menuClosed, toggleMenu }) => {
   const [data, _setData] = useState([...defaultData]);
+  const navigate = useNavigate();
+  const { apiDomain } = useEnv();
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+  const getPlanData = async () => {
+    const planResult = await fetch(
+      `${apiDomain}/api/plan`
+    );
+    const planData = await planResult.json();
+    _setData(planData);
+  };
+
+  useEffect(() => {
+    getPlanData();
+  }, []);
+
   return (
     <>
       <Sidebar menuClosed={menuClosed} toggleMenu={toggleMenu} />
       <HamburgerButton menuClosed={menuClosed} toggleMenu={toggleMenu} />
       <main className="min-h-dvh bg-gray-200 px-3 pb-3 font-roboto flex flex-col gap-3 ">
-        <h1 className="pt-3 font-bold text-3xl">Planes</h1>
+        <h1 className="pt-3 font-bold text-4xl">Planes</h1>
         <section className="[--shadow:rgba(60,64,67,0.3)_0_1px_2px_0,rgba(60,64,67,0.15)_0_2px_6px_2px] w-full h-auto rounded-2xl bg-white [box-shadow:var(--shadow)]">
           <div className="w-full border-b border-gray-300">
-            <h2 className="py-3 ps-3 font-medium text-sm">Vista general</h2>
+            <h2 className="py-3 ps-3 font-medium text-2xl">Vista general</h2>
           </div>
-          <div className="w-full p-3">
-            <table>
-              <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                {table.getFooterGroups().map((footerGroup) => (
-                  <tr key={footerGroup.id}>
-                    {footerGroup.headers.map((header) => (
-                      <th key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.footer,
-                              header.getContext()
-                            )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </tfoot>
-            </table>
+          <div className="w-full px-3 py-5 flex flex-col gap-5">
+            {data.map((plan) => (
+              <PlanCard
+                key={plan._id}
+                id={plan._id}
+                name={plan.name}
+                hourPerWeek={plan.hoursPerWeeK}
+                cost={plan.cost}
+              />
+            ))}
           </div>
-          <div className="w-full border-t border-gray-300 p-1 flex justify-end">
-            <button className="p-2 bg-green-700 text-white">+ Agregar plan</button>
+          <div className="w-full border-t border-gray-300 p-3 flex justify-center items-center">
+            <button
+              className="py-3 px-6 bg-gray-400 text-white text-3xl flex flex-col justify-center items-center"
+              onClick={() => navigate("/plans/create")}
+            >
+              <PlusIcon className={"fill-white"} width={100} height={100} />
+              <span>Agregar plan</span>
+            </button>
           </div>
         </section>
       </main>
