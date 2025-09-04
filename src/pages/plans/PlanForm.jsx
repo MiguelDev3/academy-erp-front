@@ -3,6 +3,7 @@ import { HamburgerButton } from "../../components/ui/HamburgerButton";
 import { Sidebar } from "../../components/ui/sidebar";
 import { SaveIcon } from "../../assets/icons/SaveIcon";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const planFormDataDefault = {
   name: "",
@@ -16,6 +17,16 @@ export const PlanForm = ({ menuClosed, toggleMenu }) => {
 
   if (action !== "create" && action !== "edit") {
     return <h1>ERROR 404: PAGE NOT FOUND</h1>;
+  }
+
+  const createPlan = () => {
+    Swal.fire({
+      title: "ESTA ES UNA ALERTA",
+      icon: "warning",
+      confirmButtonColor: "green",
+      confirmButtonText: "Sí",
+      showCancelButton: "true",
+    })
   }
 
   return (
@@ -54,7 +65,7 @@ export const PlanForm = ({ menuClosed, toggleMenu }) => {
                 htmlFor="plan-hours"
                 className="text-blue-500 text-base font-semibold relative top-2 ml-[7px] px-[3px] bg-white w-fit"
               >
-                Horas por semana:
+                Horas:
               </label>
               <input
                 id="plan-hours"
@@ -87,13 +98,14 @@ export const PlanForm = ({ menuClosed, toggleMenu }) => {
             </div>
             <div className="input flex flex-col w-full static col-span-2">
               <button
-                className="relative mt-3 cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-black rounded-[16px] bg-gradient-to-t from-blue-800 to-blue-400 active:scale-95"
+                className="relative mt-3 cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-black rounded-[16px] bg-blue-800 active:scale-95"
                 onClick={(e) => {
                   e.preventDefault();
                   console.log(planData)
+                  createPlan();
                 }}
               >
-                <span className="w-full h-full flex items-center justify-center gap-2 px-8 py-3 bg-blue-500 text-white text-lg rounded-[14px] bg-gradient-to-t from-blue-700 to-blue-300">
+                <span className="w-full h-full flex items-center justify-center gap-2 px-8 py-3 bg-blue-500 text-white text-lg rounded-[14px] bg-blue-700">
                   <SaveIcon classname={"fill-white"} />
                   Guardar
                 </span>
