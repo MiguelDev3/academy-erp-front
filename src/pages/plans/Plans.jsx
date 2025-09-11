@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { PlusIcon } from "../../assets/icons/PlusIcon";
 import { useNavigate } from "react-router-dom";
 import { useEnv } from "../../hooks/useEnv";
+import { LoaderSpin } from "../../components/ui/LoaderSpin";
 
 const defaultData = [
   {
@@ -37,6 +38,7 @@ export const Plans = ({ menuClosed, toggleMenu }) => {
     <>
       <Sidebar menuClosed={menuClosed} toggleMenu={toggleMenu} />
       <HamburgerButton menuClosed={menuClosed} toggleMenu={toggleMenu} />
+      <LoaderSpin/>
       <main className="min-h-dvh bg-gray-200 px-3 pb-3 font-roboto flex flex-col gap-3 ">
         <h1 className="pt-3 font-bold text-4xl">Planes</h1>
         <section className="[--shadow:rgba(60,64,67,0.3)_0_1px_2px_0,rgba(60,64,67,0.15)_0_2px_6px_2px] w-full h-auto rounded-2xl bg-white [box-shadow:var(--shadow)]">
@@ -49,8 +51,9 @@ export const Plans = ({ menuClosed, toggleMenu }) => {
                 key={plan._id}
                 id={plan._id}
                 name={plan.name}
-                hourPerWeek={plan.hoursPerWeeK}
+                hoursPerWeek={plan.hoursPerWeek}
                 cost={plan.cost}
+                setPlanData={_setData}
               />
             ))}
           </div>
