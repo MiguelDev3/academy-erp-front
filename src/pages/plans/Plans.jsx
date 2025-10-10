@@ -23,9 +23,9 @@ export const Plans = ({ menuClosed, toggleMenu }) => {
   const { apiDomain } = useEnv();
 
   const getPlanData = async () => {
-    const planResult = await fetch(
-      `${apiDomain}/api/plan`
-    );
+    const planResult = await fetch(`${apiDomain}/api/plan`, {
+      credentials: "include",
+    });
     const planData = await planResult.json();
     _setData(planData);
   };
@@ -38,7 +38,7 @@ export const Plans = ({ menuClosed, toggleMenu }) => {
     <>
       <Sidebar menuClosed={menuClosed} toggleMenu={toggleMenu} />
       <HamburgerButton menuClosed={menuClosed} toggleMenu={toggleMenu} />
-      <LoaderSpin/>
+      <LoaderSpin />
       <main className="min-h-dvh bg-gray-200 px-3 pb-3 font-roboto flex flex-col gap-3 ">
         <h1 className="pt-3 font-bold text-4xl">Planes</h1>
         <section className="[--shadow:rgba(60,64,67,0.3)_0_1px_2px_0,rgba(60,64,67,0.15)_0_2px_6px_2px] w-full h-auto rounded-2xl bg-white [box-shadow:var(--shadow)]">
