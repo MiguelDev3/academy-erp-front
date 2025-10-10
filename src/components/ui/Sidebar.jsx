@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { HomeIcon } from "../../assets/icons/homeIcon";
 import { StudentIcon } from "../../assets/icons/studentIcon";
 import { PlansIcon } from "../../assets/icons/PlansIcon";
@@ -16,9 +16,7 @@ export const Sidebar = ({ menuClosed, toggleMenu }) => {
           <Link
             to="/dashboard"
             className="flex items-center gap-2 p-4 text-white hover:bg-[#1f2a3d]"
-            onClick={() => {
-             setTimeout(toggleMenu, 100) 
-            }}
+            onClick={toggleMenu}
           >
             <HomeIcon className={"fill-white pointer-events-none"} />
             <span className="text-xl pointer-events-none">Inicio</span>
@@ -26,9 +24,7 @@ export const Sidebar = ({ menuClosed, toggleMenu }) => {
           <Link
             to="/students"
             className="flex items-center gap-2 p-4 text-white hover:bg-[#1f2a3d]"
-            onClick={() => {
-             setTimeout(toggleMenu, 100) 
-            }}
+            onClick={toggleMenu}
           >
             <StudentIcon className={"fill-white pointer-events-none"} />
             <span className="text-xl pointer-events-none">Estudiantes</span>
@@ -36,9 +32,7 @@ export const Sidebar = ({ menuClosed, toggleMenu }) => {
           <Link
             to="/plans"
             className="flex items-center gap-2 p-4 text-white hover:bg-[#1f2a3d]"
-            onClick={() => {
-             setTimeout(toggleMenu, 100) 
-            }}
+            onClick={toggleMenu}
           >
             <PlansIcon className={"fill-white pointer-events-none"} />
             <span className="text-xl pointer-events-none">Planes</span>

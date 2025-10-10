@@ -19,6 +19,7 @@ export const Login = () => {
     const apiOptions = {
       method: "POST",
       headers: apiHeaders,
+      credentials: "include",
       body: JSON.stringify(user),
     };
 
@@ -30,9 +31,10 @@ export const Login = () => {
       }
 
       const data = await response.json();
-      Cookies.set("account_login", data.token);
+
       navigate("/dashboard");
     } catch (error) {
+      alert("Usuario o contraseña incorrecta");
       throw new Error(error.message);
     }
   };

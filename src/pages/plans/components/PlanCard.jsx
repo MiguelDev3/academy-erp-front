@@ -4,17 +4,18 @@ import { EditIcon } from "../../../assets/icons/EditIcon";
 import { useEnv } from "../../../hooks/useEnv";
 import Swal from "sweetalert2";
 
-export const PlanCard = ({ id, name, hoursPerWeek, cost, setPlanData }) => {
+export const PlanCard = ({ id, name, hoursPerWeek, cost, refetch }) => {
   const { apiDomainPlan } = useEnv();
   const navigate = useNavigate();
 
   const deletePlan = async (planId = "") => {
     const options = {
       method: "DELETE",
+      credentials: "include"
     };
 
     try {
-      const result = await fetch(`${apiDomainPlan}/delete/${planId}`, options);
+      const result = await fetch(`${apiDomainPlan}/${planId}`, options);
       const data = await result.json();
       if (!result.ok) {
         Swal.fire({
@@ -24,11 +25,11 @@ export const PlanCard = ({ id, name, hoursPerWeek, cost, setPlanData }) => {
         });
         return;
       }
-      setPlanData(prevPlans => prevPlans.filter(plan => plan._id !== planId));
       Swal.fire("Eliminado correctamente", "", "success");
     } catch (error) {
       Swal.fire("Error de servidor", "", "error");
     }
+    refetch();
   };
   return (
     <div className="relative bg-white rounded-lg shadow-md border-s-2 border-green-600">

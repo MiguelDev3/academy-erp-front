@@ -7,23 +7,23 @@ import { Students } from "./pages/students/Students";
 import { useState } from "react";
 import { Plans } from "./pages/plans/Plans";
 import { PlanForm } from "./pages/plans/PlanForm";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { ProtectedLayout } from "./layout/ProtectedLayout";
 
 function App() {
-  const [menuClosed, setMenuClosed] = useState(true);
-
-  const toggleMenu = () => {
-    setMenuClosed(!menuClosed);
-  }
-
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
-        <Route path="/students" element={<Students menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
-        <Route path="/plans" element={<Plans menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
-        <Route path="/plans/:action" element={<PlanForm menuClosed={menuClosed} setMenuClosed={setMenuClosed} toggleMenu={toggleMenu}/>} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/students" element={<Students />} />
+            <Route path="/plans" element={<Plans />} />
+            <Route path="/plans/:action" element={<PlanForm />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

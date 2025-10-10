@@ -1,6 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { HamburgerButton } from "../../components/ui/HamburgerButton";
-import { Sidebar } from "../../components/ui/sidebar";
 import { SaveIcon } from "../../assets/icons/SaveIcon";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -14,7 +12,7 @@ const planFormDataDefault = {
   cost: 0,
 };
 
-export const PlanForm = ({ menuClosed, toggleMenu }) => {
+export const PlanForm = () => {
   const [planData, setPlanData] = useState({ ...planFormDataDefault });
   const { action } = useParams();
   const { apiDomainPlan } = useEnv();
@@ -62,11 +60,12 @@ export const PlanForm = ({ menuClosed, toggleMenu }) => {
     const options = {
       method: "POST",
       headers: apiPlanHeaders,
+      credentials: 'include',
       body: JSON.stringify(planData),
     };
 
     try {
-      const result = await fetch(`${apiDomainPlan}/create`, options);
+      const result = await fetch(`${apiDomainPlan}`, options);
       const data = await result.json();
       if (!result.ok) {
         const errorParams = data.map((error) => error.path[0]).join(", ");
@@ -134,8 +133,6 @@ export const PlanForm = ({ menuClosed, toggleMenu }) => {
 
   return (
     <>
-      <Sidebar menuClosed={menuClosed} toggleMenu={toggleMenu} />
-      <HamburgerButton menuClosed={menuClosed} toggleMenu={toggleMenu} />
       <LoaderSpin />
       <main className="min-h-dvh bg-gray-200 px-3 pb-3 font-roboto flex flex-col gap-3">
         <h1 className="pt-3 font-bold text-4xl">
