@@ -1,36 +1,37 @@
 import { useNavigate } from "react-router-dom";
 import { DeleteIcon } from "../../../assets/icons/DeleteIcon";
 import { EditIcon } from "../../../assets/icons/EditIcon";
-import { useEnv } from "../../../hooks/useEnv";
 import Swal from "sweetalert2";
+import { UsePlanMutation } from "../../../hooks/mutations/usePlanMutation";
 
 export const PlanCard = ({ id, name, hoursPerWeek, cost, refetch }) => {
-  const { apiDomainPlan } = useEnv();
+  const { deletePlan } = UsePlanMutation();
+
   const navigate = useNavigate();
 
-  const deletePlan = async (planId = "") => {
-    const options = {
-      method: "DELETE",
-      credentials: "include"
-    };
+  const handleDeletePlan = async () => {
+    const confirm = await Swal.fire({
+      title: "¿Eliminar?",
+      icon: "question",
+      confirmButtonColor: "green",
+      confirmButtonText: "Sí",
+      showDenyButton: "true",
+    });
 
-    try {
-      const result = await fetch(`${apiDomainPlan}/${planId}`, options);
-      const data = await result.json();
-      if (!result.ok) {
-        Swal.fire({
-          title: "No se pudo eliminar plan",
-          text: `Error: ${data}`,
-          icon: "error",
-        });
-        return;
-      }
-      Swal.fire("Eliminado correctamente", "", "success");
-    } catch (error) {
-      Swal.fire("Error de servidor", "", "error");
-    }
+    if (!confirm.isConfirmed) return;
+
+    deletePlan.mutate(id, {
+      onSuccess: () => {
+        Swal.fire("Eliminado correctamente", "", "success");
+      },
+      onError: () => {
+        Swal.fire("Error de servidor", "", "error");
+      },
+    });
+
     refetch();
   };
+
   return (
     <div className="relative bg-white rounded-lg shadow-md border-s-2 border-green-600">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
@@ -53,8 +54,11 @@ export const PlanCard = ({ id, name, hoursPerWeek, cost, refetch }) => {
           type="button"
           className="text-gray-400 bg-green-600 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-10 h-10 inline-flex justify-center items-center"
           onClick={() => {
-            localStorage.setItem("current-plan", JSON.stringify({id, name, hoursPerWeek, cost}))
-            navigate("/plans/edit")
+            localStorage.setItem(
+              "current-plan",
+              JSON.stringify({ id, name, hoursPerWeek, cost })
+            );
+            navigate("/plans/edit");
           }}
         >
           <EditIcon className={"fill-white"} />
@@ -64,21 +68,7 @@ export const PlanCard = ({ id, name, hoursPerWeek, cost, refetch }) => {
           data-id={id}
           type="button"
           className="text-gray-400 bg-red-600 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-10 h-10 inline-flex justify-center items-center"
-          onClick={(e) => {
-            Swal.fire({
-              title: "¿Eliminar?",
-              icon: "question",
-              confirmButtonColor: "green",
-              confirmButtonText: "Sí",
-              showDenyButton: "true",
-            }).then(result => {
-              if(result.isConfirmed){
-                deletePlan(e.target.dataset.id);
-              }else if(result.isDenied){
-                return
-              }
-            })
-          }}
+          onClick={handleDeletePlan}
         >
           <DeleteIcon className={"fill-white pointer-events-none"} />
           <span className="sr-only">Edit</span>
