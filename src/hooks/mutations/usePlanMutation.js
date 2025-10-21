@@ -29,6 +29,7 @@ export const UsePlanMutation = () => {
 
   const updatePlan = useMutation({
     mutationFn: async ({ id, updates }) => {
+      console.log(id)
       const res = await fetch(`${apiDomainPlan}/${id}`, {
         method: "PUT",
         headers: {

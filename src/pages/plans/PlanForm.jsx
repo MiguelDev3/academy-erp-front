@@ -3,8 +3,8 @@ import { SaveIcon } from "../../assets/icons/SaveIcon";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { LoaderSpin } from "../../components/ui/LoaderSpin";
-import { useEnv } from "../../hooks/useEnv";
 import { useEffect } from "react";
+import { UsePlanMutation } from "../../hooks/mutations/usePlanMutation";
 
 const planFormDataDefault = {
   name: "",
@@ -15,109 +15,70 @@ const planFormDataDefault = {
 export const PlanForm = () => {
   const [planData, setPlanData] = useState({ ...planFormDataDefault });
   const { action } = useParams();
-  const { apiDomainPlan } = useEnv();
+  const { createPlan, updatePlan } = UsePlanMutation();
   const navigate = useNavigate();
 
   if (action !== "create" && action !== "edit") {
     return <h1>ERROR 404: PAGE NOT FOUND</h1>;
   }
 
-  const clickCreatePlan = () => {
-    Swal.fire({
+  const handleCreatePlan = async () => {
+    const confirmCreate = await Swal.fire({
       title: "¿Crear el nuevo plan?",
       icon: "question",
       confirmButtonColor: "green",
       confirmButtonText: "Sí",
       showDenyButton: "true",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        createPlan();
-      } else if (result.isDenied) {
-        Swal.fire("Los datos no se guardaron", "", "warning");
-      }
+    });
+
+    if (!confirmCreate.isConfirmed) return;
+
+    createPlan.mutate(planData, {
+      onSuccess: () => {
+        Swal.fire("Plan creado con éxito", "", "success").then((result) => {
+          if (result.isConfirmed) {
+            navigate("/plans");
+          }
+        });
+      },
+      onError: () => {
+        Swal.fire("Error en el servidor", `Error: ${error.message}`, "error");
+      },
     });
   };
-  const clickEditPlan = () => {
-    Swal.fire({
+
+  const handleUpdatePlan = async () => {
+    const { id } = JSON.parse(localStorage.getItem("current-plan"));
+    const confirmUpdate = await Swal.fire({
       title: "¿Los cambios son correctos?",
       icon: "question",
       confirmButtonColor: "green",
       confirmButtonText: "Sí",
       showDenyButton: "true",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        updatePlan();
-      } else if (result.isDenied) {
-        Swal.fire("Los cambios no se guardaron", "", "warning");
-      }
     });
-  };
 
-  const createPlan = async () => {
-    const apiPlanHeaders = new Headers();
-    apiPlanHeaders.append("Content-Type", "application/json");
+    if (!confirmUpdate.isConfirmed) return;
 
-    const options = {
-      method: "POST",
-      headers: apiPlanHeaders,
-      credentials: 'include',
-      body: JSON.stringify(planData),
-    };
-
-    try {
-      const result = await fetch(`${apiDomainPlan}`, options);
-      const data = await result.json();
-      if (!result.ok) {
-        const errorParams = data.map((error) => error.path[0]).join(", ");
-        Swal.fire(
-          "Error al crear plan",
-          `Error - Revise los siguientes parámetros: ${errorParams}`,
-          "error"
-        );
-        return;
+    updatePlan.mutate(
+      {
+        id,
+        updates: planData,
+      },
+      {
+        onSuccess: () => {
+          Swal.fire("Plan actualizado con éxito", "", "success").then(
+            (result) => {
+              if (result.isConfirmed) {
+                navigate("/plans");
+              }
+            }
+          );
+        },
+        onError: () => {
+          Swal.fire("Error en el servidor", `Error: ${error.message}`, "error");
+        },
       }
-      Swal.fire("Plan creado con éxito", "", "success").then((result) => {
-        if (result.isConfirmed) {
-          navigate("/plans");
-        }
-      });
-      return;
-    } catch (error) {
-      Swal.fire("Error en el servidor", `Error: ${error.message}`, "error");
-    }
-  };
-  const updatePlan = async () => {
-    const apiPlanHeaders = new Headers();
-    apiPlanHeaders.append("Content-Type", "application/json");
-
-    const options = {
-      method: "PUT",
-      headers: apiPlanHeaders,
-      body: JSON.stringify(planData),
-    };
-
-    try {
-      const { id } = JSON.parse(localStorage.getItem("current-plan"));
-      const result = await fetch(`${apiDomainPlan}/update/${id}`, options);
-      const data = await result.json();
-      if (!result.ok) {
-        const errorParams = data.map((error) => error.path[0]).join(", ");
-        Swal.fire(
-          "Error al editar plan",
-          `Error - Revise los siguientes parámetros: ${errorParams}`,
-          "error"
-        );
-        return;
-      }
-      Swal.fire("Plan actualizado con éxito", "", "success").then((result) => {
-        if (result.isConfirmed) {
-          navigate("/plans");
-        }
-      });
-      return;
-    } catch (error) {
-      Swal.fire("Error en el servidor", `Error: ${error.message}`, "error");
-    }
+    );
   };
 
   useEffect(() => {
@@ -206,10 +167,10 @@ export const PlanForm = () => {
                 onClick={(e) => {
                   e.preventDefault();
                   if (action === "create") {
-                    clickCreatePlan();
+                    handleCreatePlan();
                   }
                   if (action === "edit") {
-                    clickEditPlan();
+                    handleUpdatePlan();
                   }
                 }}
               >

@@ -1,9 +1,6 @@
-import { useState } from "react";
 import { PlanCard } from "./components/PlanCard";
-import { useEffect } from "react";
 import { PlusIcon } from "../../assets/icons/PlusIcon";
 import { useNavigate } from "react-router-dom";
-import { useEnv } from "../../hooks/useEnv";
 import { LoaderSpin } from "../../components/ui/LoaderSpin";
 import { usePlanQuery } from "../../hooks/queries/usePlanQuery";
 
@@ -32,22 +29,20 @@ export const Plans = () => {
             <h2 className="py-3 ps-3 font-medium text-2xl">Vista general</h2>
           </div>
           <div className="w-full px-3 py-5 flex flex-col gap-5">
-            {plans.length > 0 ?
-              (
-                plans.map((plan) => (
-                  <PlanCard
-                    key={plan._id}
-                    id={plan._id}
-                    name={plan.name}
-                    hoursPerWeek={plan.hoursPerWeek}
-                    cost={plan.cost}
-                    refetch={refetch}
-                  />
-                ))
-              ) : (
-                <h2>No hay planes registrados</h2>
-              )
-            }
+            {plans.length > 0 ? (
+              plans.map((plan) => (
+                <PlanCard
+                  key={plan._id}
+                  id={plan._id}
+                  name={plan.name}
+                  hoursPerWeek={plan.hoursPerWeek}
+                  cost={plan.cost}
+                  refetch={refetch}
+                />
+              ))
+            ) : (
+              <h2>No hay planes registrados</h2>
+            )}
           </div>
           <div className="w-full border-t border-gray-300 p-3 flex justify-center items-center">
             <button
