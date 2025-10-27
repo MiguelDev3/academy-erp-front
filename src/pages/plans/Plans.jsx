@@ -4,15 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { LoaderSpin } from "../../components/ui/LoaderSpin";
 import { usePlanQuery } from "../../hooks/queries/usePlanQuery";
 
-const defaultData = [
-  {
-    _id: 1,
-    name: "Ligero",
-    hoursPerWeeK: 2,
-    cost: 150.0,
-  },
-];
-
 export const Plans = () => {
   const navigate = useNavigate();
   const { data: plans = [], isLoading, isError, refetch } = usePlanQuery();

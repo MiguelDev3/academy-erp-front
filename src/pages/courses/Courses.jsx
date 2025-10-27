@@ -1,6 +1,13 @@
+import { LoaderSpin } from "../../components/ui/LoaderSpin";
+import { useCourseQuery } from "../../hooks/queries/useCourseQuery";
 import { CourseCard } from "./components/CourseCard";
 
 export const Courses = () => {
+  const { data: courses, isLoading, isError, refetch } = useCourseQuery();
+
+  if (isLoading) return <LoaderSpin />;
+  if (isError) return <h1>ERROR: No se pudieron cargar los planes</h1>;
+
   return (
     <>
       <main className="min-h-dvh bg-gray-200 px-3 pb-3 font-roboto flex flex-col gap-3">
@@ -10,7 +17,19 @@ export const Courses = () => {
             <h2 className="py-3 ps-3 font-medium text-2xl">Vista general</h2>
           </div>
           <div className="w-full px-3 py-5 flex flex-col gap-5">
-            <CourseCard />
+            {courses.length > 0 ? (
+              courses.map((course, index) => (
+                <CourseCard
+                  key={index}
+                  id={course._id}
+                  title={course.name}
+                  imgUrl={course.imgData.url}
+                  imgAlt={course.imgData.alt}
+                />
+              ))
+            ) : (
+              <h2>No hay cursos registrados</h2>
+            )}
           </div>
         </section>
       </main>
