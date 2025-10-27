@@ -9,6 +9,7 @@ import { PlanForm } from "./pages/plans/PlanForm";
 import { Courses } from "./pages/courses/Courses";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { ProtectedLayout } from "./layout/ProtectedLayout";
+import { CoursesForm } from "./pages/courses/CoursesForm";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/plans" element={<Plans />} />
             <Route path="/plans/:action" element={<PlanForm />} />
             <Route path="/courses" element={<Courses />} />
+            <Route path="/courses/:action" element={<CoursesForm />} />
           </Route>
         </Route>
       </Routes>

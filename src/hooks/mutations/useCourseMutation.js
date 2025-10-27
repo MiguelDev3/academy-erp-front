@@ -27,5 +27,44 @@ export const useCourseMutation = () => {
     },
   });
 
-  return { createCourse };
+  const updateCourse = useMutation({
+    mutationFn: async ({ id, updates }) => {
+      const res = await fetch(`${apiDomainCourse}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(updates),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(`Error al actualizar Curso: ${errorData}`);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["courses"]);
+    },
+  });
+
+  const deleteCourse = useMutation({
+    mutationFn: async (id) => {
+      const res = await fetch(`${apiDomainCourse}/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(`Error al eliminar Curso: ${errorData}`);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["courses"]);
+    },
+  });
+
+  return { createCourse, updateCourse, deleteCourse };
 };

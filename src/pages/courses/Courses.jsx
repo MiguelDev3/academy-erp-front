@@ -1,12 +1,16 @@
+import { useNavigate } from "react-router-dom";
+import { PlusIcon } from "../../assets/icons/PlusIcon";
 import { LoaderSpin } from "../../components/ui/LoaderSpin";
 import { useCourseQuery } from "../../hooks/queries/useCourseQuery";
 import { CourseCard } from "./components/CourseCard";
+import { NotFound } from "../maintenance/NotFound";
 
 export const Courses = () => {
+  const navigate = useNavigate();
   const { data: courses, isLoading, isError, refetch } = useCourseQuery();
 
   if (isLoading) return <LoaderSpin />;
-  if (isError) return <h1>ERROR: No se pudieron cargar los planes</h1>;
+  if (isError) return <h1>ERROR: No se pudieron cargar los cursos</h1>;
 
   return (
     <>
@@ -22,14 +26,25 @@ export const Courses = () => {
                 <CourseCard
                   key={index}
                   id={course._id}
-                  title={course.name}
+                  name={course.name}
                   imgUrl={course.imgData.url}
                   imgAlt={course.imgData.alt}
+                  isActive={course.isActive}
+                  refetch={refetch}
                 />
               ))
             ) : (
               <h2>No hay cursos registrados</h2>
             )}
+          </div>
+          <div className="w-full border-t border-gray-300 flex justify-end p-3">
+            <button
+              className="bg-green-600 text-white flex justify-center items-center gap-2 px-4 py-2 rounded-lg"
+              onClick={() => navigate("/courses/create")}
+            >
+              <PlusIcon className={"fill-white pointer-events-none"} />
+              <span className="pointer-events-none">Agregar Curso</span>
+            </button>
           </div>
         </section>
       </main>
