@@ -11,6 +11,7 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { ProtectedLayout } from "./layout/ProtectedLayout";
 import { CoursesForm } from "./pages/courses/CoursesForm";
 import { Teachers } from "./pages/teachers/Teachers";
+import { TeachersForm } from "./pages/teachers/TeachersForm";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/students" element={<Students />} />
             <Route path="/teachers" element={<Teachers />} />
+            <Route path="/teachers/:action" element={<TeachersForm />} />
             <Route path="/plans" element={<Plans />} />
             <Route path="/plans/:action" element={<PlanForm />} />
             <Route path="/courses" element={<Courses />} />
