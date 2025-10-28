@@ -3,7 +3,6 @@ import { PlusIcon } from "../../assets/icons/PlusIcon";
 import { LoaderSpin } from "../../components/ui/LoaderSpin";
 import { useCourseQuery } from "../../hooks/queries/useCourseQuery";
 import { CourseCard } from "./components/CourseCard";
-import { NotFound } from "../maintenance/NotFound";
 
 export const Courses = () => {
   const navigate = useNavigate();

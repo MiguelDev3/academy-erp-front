@@ -10,6 +10,7 @@ import { Courses } from "./pages/courses/Courses";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { ProtectedLayout } from "./layout/ProtectedLayout";
 import { CoursesForm } from "./pages/courses/CoursesForm";
+import { Teachers } from "./pages/teachers/Teachers";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route element={<ProtectedLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/students" element={<Students />} />
+            <Route path="/teachers" element={<Teachers />} />
             <Route path="/plans" element={<Plans />} />
             <Route path="/plans/:action" element={<PlanForm />} />
             <Route path="/courses" element={<Courses />} />
